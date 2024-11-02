@@ -1,4 +1,4 @@
-package co.edu.uniquindio.reservasuq.model.instalaciones;
+package co.edu.uniquindio.reservasuq.modelo.instalaciones;
 
 public class Instalaciones {
     private String Piscina,
@@ -7,5 +7,7 @@ public class Instalaciones {
     CanchaBaloncesto,
     AulasEstudioGrupal,
     SalonesEventos;
+
+//    String nombre, int aforo, float costo, List<Horario> horarios
 
 }
