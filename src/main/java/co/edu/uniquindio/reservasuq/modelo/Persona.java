@@ -1,5 +1,6 @@
 package co.edu.uniquindio.reservasuq.modelo;
 
+import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

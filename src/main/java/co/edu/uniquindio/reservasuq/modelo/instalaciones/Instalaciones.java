@@ -1,13 +1,18 @@
 package co.edu.uniquindio.reservasuq.modelo.instalaciones;
 
-public class Instalaciones {
-    private String Piscina,
-    Gimnasio,
-    CanchaFutbol,
-    CanchaBaloncesto,
-    AulasEstudioGrupal,
-    SalonesEventos;
+import co.edu.uniquindio.reservasuq.modelo.Horario;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-//    String nombre, int aforo, float costo, List<Horario> horarios
+import java.util.List;
+@Getter
+@Setter
+@AllArgsConstructor
+public class Instalaciones {
+    String nombre;
+    int aforo;
+    float costo;
+    List<Horario> horarios;
 
 }

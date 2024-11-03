@@ -1,7 +1,7 @@
 package co.edu.uniquindio.reservasuq.controlador;
 
 import co.edu.uniquindio.reservasuq.modelo.*;
-import co.edu.uniquindio.reservasuq.modelo.TipoPersona;
+import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import co.edu.uniquindio.reservasuq.modelo.reserva.Reserva;
 import co.edu.uniquindio.reservasuq.servicio.ServiciosReservasUQ;
 import javafx.fxml.FXMLLoader;
@@ -16,10 +16,9 @@ import java.util.List;
 public class ControladorPrincipal implements ServiciosReservasUQ {
 
     private static ControladorPrincipal INSTANCIA;
-    private final ReservasUQ reservasUQ;
+    ReservasUQ reservasUQ = ReservasUQ.getInstance();
 
     private ControladorPrincipal() {
-        reservasUQ = new ReservasUQ();
     }
 
     public static ControladorPrincipal getInstancia() {
@@ -52,7 +51,17 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
     }
 
     @Override
+    public Persona obtenerPersona(String cedula) {
+        return null;
+    }
+
+    @Override
     public List<Reserva> listarTodasReservas() {
+        return List.of();
+    }
+
+    @Override
+    public List<Reserva> listarReservasPorPersona() {
         return List.of();
     }
 

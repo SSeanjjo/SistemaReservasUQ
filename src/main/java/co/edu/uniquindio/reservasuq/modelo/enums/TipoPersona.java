@@ -1,4 +1,4 @@
-package co.edu.uniquindio.reservasuq.modelo;
+package co.edu.uniquindio.reservasuq.modelo.enums;
 
 public enum TipoPersona {
     ESTUDIANTE, DOCENTE, ADMINISTRATIVO, EXTERNOS

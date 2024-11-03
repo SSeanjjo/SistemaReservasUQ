@@ -3,7 +3,7 @@ package co.edu.uniquindio.reservasuq.servicio;
 import co.edu.uniquindio.reservasuq.modelo.Horario;
 import co.edu.uniquindio.reservasuq.modelo.Persona;
 import co.edu.uniquindio.reservasuq.modelo.reserva.Reserva;
-import co.edu.uniquindio.reservasuq.modelo.TipoPersona;
+import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,13 +15,14 @@ public interface ServiciosReservasUQ {
 
     void crearInstalacion(String nombre, int aforo, float costo, List<Horario> horarios);
 
-    Reserva crearReserva(String idInstalacion, String cedulaPersona, LocalDate diaReserva, String horaReserva) throws Exception;
+    Reserva crearReserva(String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva) throws Exception;
 
     Persona obtenerPersona(String cedula);
 
     List<Reserva> listarTodasReservas();
 
-    List<Reserva> listarReservasPorPersona(String cedulaPersona);
+    List<Reserva> listarReservasPorPersona();
 
+    List<Reserva> listarReservasPorPersona(String cedulaPersona);
 }
 

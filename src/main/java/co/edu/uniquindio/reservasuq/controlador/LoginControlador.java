@@ -2,7 +2,7 @@ package co.edu.uniquindio.reservasuq.controlador;
 
 import co.edu.uniquindio.reservasuq.modelo.Persona;
 import co.edu.uniquindio.reservasuq.modelo.Sesion;
-import co.edu.uniquindio.reservasuq.modelo.TipoPersona;
+import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -16,10 +16,17 @@ public class LoginControlador {
     public TextField txtPassword;
 
     private final ControladorPrincipal controladorPrincipal;
+    Sesion sesion = Sesion.getInstancia();
+    Persona persona = sesion.getPersona();
+//    Persona sesionActual =  sesion.setPersona(persona);
+
+
 
     public LoginControlador() {
         this.controladorPrincipal = ControladorPrincipal.getInstancia();
     }
+
+
 
     public void login(ActionEvent actionEvent) {
         try {
@@ -27,7 +34,7 @@ public class LoginControlador {
             String password = txtPassword.getText();
 
 //            Persona persona = controladorPrincipal.login(email, password);
-            Persona persona = controladorPrincipal.get
+//            Persona persona = controladorPrincipal.
             if(persona.getTipoPersona() != TipoPersona.ADMINISTRATIVO) {
                 controladorPrincipal.navegarVentana("/panelCliente.fxml", "Panel Usuario");
             }else{
@@ -41,6 +48,8 @@ public class LoginControlador {
         }
     }
 
-    Sesion sesion = Sesion.getInstancia();
-//    sesion.setPersona(persona);
+
+
+
+
 }
