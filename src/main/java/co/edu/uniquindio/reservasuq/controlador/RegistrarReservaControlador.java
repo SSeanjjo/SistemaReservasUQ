@@ -1,48 +1,47 @@
 package co.edu.uniquindio.reservasuq.controlador;
 
+import co.edu.uniquindio.reservasuq.modelo.Horario;
 import co.edu.uniquindio.reservasuq.modelo.ReservasUQ;
 import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class RegistrarReservaControlador implements Initializable {
     ReservasUQ reservasUQ = ReservasUQ.getInstance();
 
     @FXML
+    public TextField txtidInstalacion;
+    @FXML
     public TextField txtCedula;
     @FXML
-    public TextField txtNombre;
+    private DatePicker dpDiaCita;
     @FXML
-    public TextField txtCorreoInstitucional;
-    @FXML
-    public TextField txtContrasena;
-    @FXML
-    private ComboBox<TipoPersona> cbTipoPersona;
+    private ComboBox<String> cbHoraCita;
 
-    public void registrarPersona(ActionEvent actionEvent){
-        try {
-            String cedula = txtCedula.getText();
-            String nombre = txtNombre.getText();
-            String correoInstitucional = txtCorreoInstitucional.getText();
-            String contrasena = txtContrasena.getText();
-            TipoPersona  tipoPersona = cbTipoPersona.getValue();
+    public void generarReserva(ActionEvent actionEvent) {
+    try {
+        String idInstalacion = txtidInstalacion.getText();
+        String cedula = txtCedula.getText();
+        LocalDate diaCita = dpDiaCita.getValue();
+        String horaCita = cbHoraCita.getValue();
 
-            reservasUQ.registrarPersona(cedula, nombre, tipoPersona, correoInstitucional, contrasena);
-            limpiarFormularioRegistro();
-            mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);
-        } catch (Exception e) {
-            mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
-        }
+        reservasUQ.crearReserva(idInstalacion, cedula, diaCita, horaCita);
+        limpiarFormulario();
+        mostrarAlerta("Reserva generada correctamente", Alert.AlertType.INFORMATION);
 
+    } catch (Exception e){
+        mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);}
     }
-
 
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo){
         Alert alert = new Alert(tipo);
@@ -52,16 +51,18 @@ public class RegistrarReservaControlador implements Initializable {
         alert.show();
     }
 
-    private void limpiarFormularioRegistro() {
+    private void limpiarFormulario() {
+        txtidInstalacion.setText("");
         txtCedula.setText("");
-        txtNombre.setText("");
-        txtCorreoInstitucional.setText("");
-        txtContrasena.setText("");
-        cbTipoPersona.setValue(null);
+        dpDiaCita.setValue(null);
+        cbHoraCita.setValue(null);
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        cbTipoPersona.getItems().addAll(TipoPersona.values());
+        Horario horario = new Horario(); // Instancia de la clase Horario
+        cbHoraCita.setItems(FXCollections.observableArrayList(horario.getHorarios())); // Obtiene los horarios y los asigna
     }
+
+
 
 }

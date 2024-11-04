@@ -47,12 +47,12 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
 
     @Override
     public Reserva crearReserva(String idInstalacion, String cedulaPersona, LocalDate diaReserva, String horaReserva) throws Exception {
-        return null;
+        return reservasUQ.crearReserva(idInstalacion, cedulaPersona, diaReserva, horaReserva);
     }
 
     @Override
     public Persona obtenerPersona(String cedula) {
-        return null;
+        return reservasUQ.obtenerPersona(cedula);
     }
 
     @Override
