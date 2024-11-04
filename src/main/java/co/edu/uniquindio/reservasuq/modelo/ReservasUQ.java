@@ -5,10 +5,14 @@ import co.edu.uniquindio.reservasuq.modelo.instalaciones.Instalaciones;
 import co.edu.uniquindio.reservasuq.modelo.reserva.Reserva;
 import co.edu.uniquindio.reservasuq.servicio.ServiciosReservasUQ;
 import lombok.Getter;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
+
 @Getter
 public class ReservasUQ implements ServiciosReservasUQ {
     public static ReservasUQ INSTANCIA;
@@ -31,6 +35,7 @@ public class ReservasUQ implements ServiciosReservasUQ {
 
     @Override
     public void registrarPersona(String cedula, String nombre, TipoPersona tipoPersona, String correoInstitucional, String password) throws Exception {
+        // Perform validations...
         String ValidationMessage = "";
 
         if (cedula == null || cedula.isEmpty()) {
@@ -55,20 +60,51 @@ public class ReservasUQ implements ServiciosReservasUQ {
         if (obtenerPersona(cedula) != null) {
             throw new Exception("Ya existe una persona con la cedula ingresada");
         }
-//        TipoPersona tipoCargoPersona = switch (tipoPersona){
-//            case ESTUDIANTE -> new
-//        }
+
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         Persona persona = Persona.builder()
                 .cedula(cedula)
                 .nombre(nombre)
                 .correoInstitucional(correoInstitucional)
-                .password(password)
+                .password(hashedPassword)  // Use hashed password here
                 .tipoPersona(tipoPersona)
                 .build();
         listaPersonas.add(persona);
     }
 
+
     @Override
+    public Persona login(String correo, String contrasena) throws Exception {
+
+        String ValidationMessage = "";
+        Persona loginUsuario = null;
+
+        if (correo == null || correo.isEmpty()) {
+            ValidationMessage += "El correo no puede ser nulo o vacio\n";
+        }
+        if (contrasena == null || contrasena.isEmpty()) {
+            ValidationMessage += "La contraseña no puede ser nula o vacia\n";
+        }
+        if (!ValidationMessage.isEmpty()) {
+            throw new Exception(ValidationMessage);
+        }
+
+//        Persona loginUsuario = null;
+        for (Persona usuarioRegistrado : listaPersonas) {
+            if (usuarioRegistrado.getCorreoInstitucional().equals(correo)) {
+                if (BCrypt.checkpw(contrasena, usuarioRegistrado.getPassword())) { // Use BCrypt here
+                    loginUsuario = usuarioRegistrado;
+                } else {
+                    throw new Exception("La contraseña es incorrecta");
+                }
+            }
+        }
+        if (loginUsuario == null) {
+            throw new Exception("El correo no está registrado");
+        }
+        return loginUsuario;
+    }
+    /*@Override
     public Persona login(String correo, String contrasena) throws Exception {
         String ValidationMessage = "";
         Persona loginUsuario = null;
@@ -85,7 +121,7 @@ public class ReservasUQ implements ServiciosReservasUQ {
 
         for (Persona usuarioRegistrado : listaPersonas) {
             if (usuarioRegistrado.getCorreoInstitucional().equals(correo)) {
-                if (usuarioRegistrado.getPassword().equals(contrasena)) {
+                if (BCrypt.checkpw(contrasena, usuarioRegistrado.getPassword())) {
                     loginUsuario = usuarioRegistrado;
                 } else {
                     throw new Exception("La contraseña es incorrecta");
@@ -96,7 +132,7 @@ public class ReservasUQ implements ServiciosReservasUQ {
         }
         return loginUsuario;
     }
-
+*/
 
     @Override
     public void crearInstalacion(String nombre, int aforo, float costo, List<Horario> horarios) {

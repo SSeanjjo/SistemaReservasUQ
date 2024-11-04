@@ -29,20 +29,8 @@
     <Label text="Día Reserva:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
     <DatePicker fx:id="dpDiaCita" prefWidth="250.0" prefHeight="30.0" GridPane.rowIndex="1" GridPane.columnIndex="1" />
 
-<!--    <Label text="diaReserva:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>-->
-<!--    <TextField fx:id="cbdiaReserva" minWidth="270.0" GridPane.rowIndex="2" GridPane.columnIndex="1"/>-->
-
     <Label text="Hora:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
     <ComboBox fx:id="cbHoraCita" prefWidth="250.0" prefHeight="30.0" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-
-
-    <!--    &lt;!&ndash; Fourth Row &ndash;&gt;-->
-<!--    <Label text="Email:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>-->
-<!--    <TextField fx:id="txtCorreoInstitucional" minWidth="270.0" GridPane.rowIndex="3" GridPane.columnIndex="1"/>-->
-
-<!--    &lt;!&ndash; Fifth Row &ndash;&gt;-->
-<!--    <Label text="horaReserva:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>-->
-<!--    <ComboBox fx:id="cbhoraReserva" minWidth="270.0" GridPane.rowIndex="4" GridPane.columnIndex="1"/>-->
 
     <columnConstraints>
         <ColumnConstraints />
@@ -51,9 +39,5 @@
         <RowConstraints />
     </rowConstraints>
 </GridPane>
-
-<!-- Button at the bottom of the VBox -->
-    <!--   <Button onAction="#generarReserva" prefHeight="40.0" prefWidth="160.0" text="Registrar"/>-->
-
 
 </VBox>

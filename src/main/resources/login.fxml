@@ -25,5 +25,4 @@
 
     <Button text="Login" onAction="#login" minHeight="40.0" minWidth="130.0" />
 
-
 </VBox>

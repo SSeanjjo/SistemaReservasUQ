@@ -39,7 +39,6 @@ public class RegistrarPersonaControlador implements Initializable {
         txtConfirmPass.setVisible(!mostrar);
         txtPasswordShow.setVisible(mostrar);
         txtConfirmPassShow.setVisible(mostrar);
-
     }
     private void bindingPasswords(){
         txtPassword.textProperty().addListener((observable,oldValue, newValue) ->
@@ -64,7 +63,9 @@ public class RegistrarPersonaControlador implements Initializable {
             String cedula = txtCedula.getText();
             String nombre = txtNombre.getText();
             String correoInstitucional = txtCorreoInstitucional.getText();
+//            String contrasena = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
             String contrasena = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
+
             TipoPersona  tipoPersona = cbTipoPersona.getValue();
             reservasUQ.registrarPersona(cedula, nombre, tipoPersona, correoInstitucional, contrasena);
             limpiarFormularioRegistro();
