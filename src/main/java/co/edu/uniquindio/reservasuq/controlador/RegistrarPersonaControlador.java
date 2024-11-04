@@ -6,13 +6,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import org.mindrot.jbcrypt.BCrypt;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RegistrarPersonaControlador implements Initializable {
     ReservasUQ reservasUQ = ReservasUQ.getInstance();
-
     @FXML
     public TextField txtCedula;
     @FXML
@@ -68,7 +69,7 @@ public class RegistrarPersonaControlador implements Initializable {
             reservasUQ.registrarPersona(cedula, nombre, tipoPersona, correoInstitucional, contrasena);
             limpiarFormularioRegistro();
             mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);}
-
+            ControladorPrincipal.cerrarVentana(txtCedula);
         } catch (Exception e) {
             mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }

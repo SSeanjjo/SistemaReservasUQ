@@ -103,7 +103,7 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         }
     }
 
-    public void cerrarVentana(Node node){
+    public static void cerrarVentana(Node node){
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
     }
