@@ -10,7 +10,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RegistrarReservaControlador implements Initializable {
+public class RegistrarPersonaControlador implements Initializable {
     ReservasUQ reservasUQ = ReservasUQ.getInstance();
 
     @FXML
@@ -68,6 +68,7 @@ public class RegistrarReservaControlador implements Initializable {
             reservasUQ.registrarPersona(cedula, nombre, tipoPersona, correoInstitucional, contrasena);
             limpiarFormularioRegistro();
             mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);}
+
         } catch (Exception e) {
             mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }
