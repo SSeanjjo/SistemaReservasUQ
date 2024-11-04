@@ -5,6 +5,7 @@ module SistemaDeReservaciones {
 
     requires org.simplejavamail;
     requires org.simplejavamail.core;
+    requires jbcrypt;
 
     opens co.edu.uniquindio.reservasuq to javafx.fxml;
     exports co.edu.uniquindio.reservasuq;

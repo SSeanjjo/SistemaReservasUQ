@@ -4,11 +4,12 @@ import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import co.edu.uniquindio.reservasuq.modelo.instalaciones.Instalaciones;
 import co.edu.uniquindio.reservasuq.modelo.reserva.Reserva;
 import co.edu.uniquindio.reservasuq.servicio.ServiciosReservasUQ;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+@Getter
 public class ReservasUQ implements ServiciosReservasUQ {
     public static ReservasUQ INSTANCIA;
     private List<Persona> listaPersonas;
