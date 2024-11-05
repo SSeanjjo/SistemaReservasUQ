@@ -5,9 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -29,42 +27,25 @@
         <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField fx:id="txtNombre" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <!-- Third Row -->
-        <Label text="Telefono:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <TextField fx:id="txtTelefono" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
         <!-- Fourth Row -->
-        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label text="correoInstitucional:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <TextField fx:id="txtCorreoInstitucional" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
         <!-- Fifth Row -->
         <Label text="Tipo de Persona:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
         <ComboBox fx:id="cbTipoPersona" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-      <PasswordField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <TextField fx:id="txtPasswordShow" GridPane.columnIndex="1" GridPane.rowIndex="5" visible="false" />
-      <Label text="Contraseña" GridPane.rowIndex="5" />
-      <Label text="Confirmar contraseña" GridPane.rowIndex="6" />
-      <PasswordField fx:id="txtConfirmPass" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <TextField fx:id="txtConfirmPassShow" GridPane.columnIndex="1" GridPane.rowIndex="6" visible="false"/>
-      <Label text="Mostrar contraseña" GridPane.rowIndex="7" />
-      <CheckBox fx:id="checkShowPass" mnemonicParsing="false" onAction="#OnMostrarPassword" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+        <!-- Password Fields -->
+        <Label text="Contraseña" GridPane.rowIndex="5" />
+        <PasswordField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <TextField fx:id="txtPasswordShow" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-        <columnConstraints>
-            <ColumnConstraints />
-         <ColumnConstraints />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-        </rowConstraints>
+        <Label text="Confirmar contraseña" GridPane.rowIndex="6" />
+        <PasswordField fx:id="txtConfirmPass" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <TextField fx:id="txtConfirmPassShow" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+        <Label text="Mostrar contraseña" GridPane.rowIndex="7" />
+        <CheckBox fx:id="checkShowPass" mnemonicParsing="false" onAction="#OnMostrarPassword" GridPane.columnIndex="1" GridPane.rowIndex="7" />
     </GridPane>
 
     <!-- Button at the bottom of the VBox -->

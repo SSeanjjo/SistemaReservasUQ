@@ -25,12 +25,8 @@
             <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
             <TextField fx:id="txtNombre" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <!-- Third Row -->
-            <Label text="Telefono:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <TextField fx:id="txtTelefono" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
             <!-- Fourth Row -->
-            <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Label text="correoInstitucional:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
             <TextField fx:id="txtCorreoInstitucional" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
             <!-- Fifth Row -->
@@ -42,26 +38,9 @@
             <PasswordField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="txtPasswordShow" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-            <Label text="Confirmar contraseña" GridPane.rowIndex="6" />
-            <PasswordField fx:id="txtConfirmPass" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="txtConfirmPassShow" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-
             <Label text="Mostrar contraseña" GridPane.rowIndex="7" />
             <CheckBox fx:id="checkShowPass" mnemonicParsing="false" onAction="#OnMostrarPassword" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+
         </GridPane>
     </VBox>
 
@@ -71,11 +50,12 @@
                 <Font size="20.0" />
             </font>
         </Label>
-        <TableView fx:id="tablaCitas" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tablaReservas" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="colPaciente" text="Paciente" />
-                <TableColumn fx:id="colFecha" text="Fecha" />
-                <TableColumn fx:id="colServicio" text="Servicio" />
+                <TableColumn fx:id="colidInstalacion" text="Instalación" />
+                <TableColumn fx:id="colCedula" text="Cédula" />
+                <TableColumn fx:id="diaReserva" text="Día Reserva" />
+                <TableColumn fx:id="horaReserva" text="Hora Reserva" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

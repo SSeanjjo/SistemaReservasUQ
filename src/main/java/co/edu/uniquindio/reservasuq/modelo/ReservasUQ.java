@@ -10,6 +10,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
 
@@ -26,15 +27,15 @@ public class ReservasUQ implements ServiciosReservasUQ {
         listaInstalaciones = new ArrayList<>();
     }
 
-    public static ReservasUQ getInstance(){
-        if(INSTANCIA == null){
+    public static ReservasUQ getInstance() {
+        if (INSTANCIA == null) {
             INSTANCIA = new ReservasUQ();
         }
         return INSTANCIA;
     }
 
     @Override
-    public void registrarPersona(String cedula, String nombre, TipoPersona tipoPersona, String correoInstitucional, String password) throws Exception {
+    public void registrarPersona(String cedula, String nombre, String correoInstitucional, String contrasena, TipoPersona tipoPersona) throws Exception {
         // Perform validations...
         String ValidationMessage = "";
 
@@ -47,7 +48,7 @@ public class ReservasUQ implements ServiciosReservasUQ {
         if (correoInstitucional == null || correoInstitucional.isEmpty()) {
             ValidationMessage += "El correo institucional no puede ser nulo o vacio\n";
         }
-        if (password == null || password.isEmpty()) {
+        if (contrasena == null || contrasena.isEmpty()) {
             ValidationMessage += "La contraseña no puede ser nula o vacia\n";
         }
         if (tipoPersona == null) {
@@ -57,23 +58,57 @@ public class ReservasUQ implements ServiciosReservasUQ {
             throw new Exception(ValidationMessage);
         }
 
-        if (obtenerPersona(cedula) != null) {
-            throw new Exception("Ya existe una persona con la cedula ingresada");
+//        if (obtenerPersona(cedula) != null) {
+//            throw new Exception("Ya existe una persona con la cedula ingresada");
+//        }
+        if (listaPersonas.stream().anyMatch(persona -> persona.getCedula().equals(cedula))) {
+            throw new Exception("La cédula ya está registrada");
+        }
+        // Password hashing
+        String hashedPassword = BCrypt.hashpw(contrasena, BCrypt.gensalt());
+        Persona nuevaPersona = new Persona(cedula, nombre, correoInstitucional, hashedPassword, tipoPersona);
+        listaPersonas.add(nuevaPersona);
+
+//    String hashedPassword = BCrypt.hashpw(hashedPassword, BCrypt.gensalt());
+//        Persona persona = Persona.builder()
+//                .cedula(getPersona().getCedula())
+//                .nombre(getPersona().getNombre())
+//                .correoInstitucional(getPersona().getCorreoInstitucional())
+//                .contrasena(hashedPassword)
+//                .tipoPersona(getPersona().getTipoPersona())
+//                .build();
+//        listaPersonas.add(persona);
+    }
+
+    @Override
+    public Persona login(String correo, String contrasena) throws Exception {
+        if (correo == null || correo.isEmpty()) {
+            throw new Exception("El correo no puede ser nulo o vacío");
+        }
+        if (contrasena == null || contrasena.isEmpty()) {
+            throw new Exception("La contraseña no puede ser nula o vacía");
         }
 
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        Persona persona = Persona.builder()
-                .cedula(cedula)
-                .nombre(nombre)
-                .correoInstitucional(correoInstitucional)
-                .password(hashedPassword)  // Use hashed password here
-                .tipoPersona(tipoPersona)
-                .build();
-        listaPersonas.add(persona);
+        // Search for user by email
+        Persona usuarioRegistrado = listaPersonas.stream()
+                .filter(persona -> persona.getCorreoInstitucional().equals(correo))
+                .findFirst()
+                .orElse(null);
+
+        if (usuarioRegistrado == null) {
+            throw new Exception("El correo no está registrado");
+        }
+
+        // Verify password using BCrypt
+        if (!BCrypt.checkpw(contrasena, usuarioRegistrado.getContrasena())) {
+            throw new Exception("La contraseña es incorrecta");
+        }
+
+        return usuarioRegistrado;
     }
 
 
-    @Override
+/*    @Override
     public Persona login(String correo, String contrasena) throws Exception {
 
         String ValidationMessage = "";
@@ -103,58 +138,8 @@ public class ReservasUQ implements ServiciosReservasUQ {
             throw new Exception("El correo no está registrado");
         }
         return loginUsuario;
-    }
-    /*@Override
-    public Persona login(String correo, String contrasena) throws Exception {
-        String ValidationMessage = "";
-        Persona loginUsuario = null;
+    }*/
 
-        if (correo == null || correo.isEmpty()) {
-            ValidationMessage += "El correo no puede ser nulo o vacio\n";
-        }
-        if (contrasena == null || contrasena.isEmpty()) {
-            ValidationMessage += "La contraseña no puede ser nula o vacia\n";
-        }
-        if (!ValidationMessage.isEmpty()) {
-            throw new Exception(ValidationMessage);
-        }
-
-        for (Persona usuarioRegistrado : listaPersonas) {
-            if (usuarioRegistrado.getCorreoInstitucional().equals(correo)) {
-                if (BCrypt.checkpw(contrasena, usuarioRegistrado.getPassword())) {
-                    loginUsuario = usuarioRegistrado;
-                } else {
-                    throw new Exception("La contraseña es incorrecta");
-                }
-            } else {
-                throw new Exception("El correo no esta registrado");
-            }
-        }
-        return loginUsuario;
-    }
-*/
-
-    @Override
-    public void crearInstalacion(String nombre, int aforo, float costo, List<Horario> horarios) {
-        String ValidationMessage = "";
-        if (nombre == null || nombre.isEmpty()) {
-            ValidationMessage += "El nombre de la instalacion no puede ser nulo o vacio\n";
-        }
-        if (aforo <= 0) {
-            ValidationMessage += "El aforo de la instalacion no puede ser menor o igual a 0\n";
-        }
-        if (costo <= 0) {
-            ValidationMessage += "El costo de la instalacion no puede ser menor o igual a 0\n";
-        }
-        if (horarios == null || horarios.isEmpty()) {
-            ValidationMessage += "Debe ingresar al menos un horario\n";
-        }
-
-        Instalaciones instalacion = new Instalaciones(nombre, aforo, costo, horarios);
-        listaInstalaciones.add(instalacion);
-
-
-    }
 
     @Override
     public Reserva crearReserva(String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva) throws Exception {
@@ -190,16 +175,13 @@ public class ReservasUQ implements ServiciosReservasUQ {
         return reserva;
     }
 
-    @Override
-    public Persona obtenerPersona(String cedula) {
-        for (Persona persona : listaPersonas) {
-            if (persona.getCedula().equals(cedula)) {
-                return persona;
-            }
-        }
-        return null;
-    }
 
+    @Override
+    public Optional<Persona> obtenerPersona(String cedula) {
+        return listaPersonas.stream()
+                .filter(persona -> persona.getCedula().equals(cedula))
+                .findFirst();
+    }
 
     @Override
     public List<Reserva> listarTodasReservas() {
@@ -216,4 +198,65 @@ public class ReservasUQ implements ServiciosReservasUQ {
         return List.of();
     }
 
+    @Override
+    public void crearInstalacion(String nombre, int aforo, float costo, List<Horario> horarios) {
+        String ValidationMessage = "";
+        if (nombre == null || nombre.isEmpty()) {
+            ValidationMessage += "El nombre de la instalacion no puede ser nulo o vacio\n";
+        }
+        if (aforo <= 0) {
+            ValidationMessage += "El aforo de la instalacion no puede ser menor o igual a 0\n";
+        }
+        if (costo <= 0) {
+            ValidationMessage += "El costo de la instalacion no puede ser menor o igual a 0\n";
+        }
+        if (horarios == null || horarios.isEmpty()) {
+            ValidationMessage += "Debe ingresar al menos un horario\n";
+        }
+
+        Instalaciones instalacion = new Instalaciones(nombre, aforo, costo, horarios);
+        listaInstalaciones.add(instalacion);
+
+
+    }
 }
+
+    //    }
+//        return null;
+//        }
+//            }
+//                return persona;
+//            if (persona.getCedula().equals(cedula)) {
+//        for (Persona persona : listaPersonas) {
+//    public Optional<Persona> obtenerPersona(String cedula) {
+//    @Override
+    /*@Override
+    public Persona login(String correo, String contrasena) throws Exception {
+        String ValidationMessage = "";
+        Persona loginUsuario = null;
+
+        if (correo == null || correo.isEmpty()) {
+            ValidationMessage += "El correo no puede ser nulo o vacio\n";
+        }
+        if (contrasena == null || contrasena.isEmpty()) {
+            ValidationMessage += "La contraseña no puede ser nula o vacia\n";
+        }
+        if (!ValidationMessage.isEmpty()) {
+            throw new Exception(ValidationMessage);
+        }
+
+        for (Persona usuarioRegistrado : listaPersonas) {
+            if (usuarioRegistrado.getCorreoInstitucional().equals(correo)) {
+                if (BCrypt.checkpw(contrasena, usuarioRegistrado.getPassword())) {
+                    loginUsuario = usuarioRegistrado;
+                } else {
+                    throw new Exception("La contraseña es incorrecta");
+                }
+            } else {
+                throw new Exception("El correo no esta registrado");
+            }
+        }
+        return loginUsuario;
+    }
+
+*/
