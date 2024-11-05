@@ -15,5 +15,9 @@ public class InicioControlador{
     public void irRegistroCliente(ActionEvent actionEvent) {
         controladorPrincipal.navegarVentana("/registro.fxml", "Registro Persona");
     }
+    public void irReservacion(ActionEvent actionEvent) {
+        controladorPrincipal.navegarVentana("/reservacion.fxml", "Reservación");
+    }
+
 
 }

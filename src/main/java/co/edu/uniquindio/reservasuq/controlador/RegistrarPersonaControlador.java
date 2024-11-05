@@ -39,31 +39,6 @@ public class RegistrarPersonaControlador implements Initializable {
     @FXML
     private CheckBox checkShowPass;
 
-    public void OnMostrarPassword(){
-        boolean mostrar = checkShowPass.isSelected();
-        txtPassword.setVisible(!mostrar);
-        txtConfirmPass.setVisible(!mostrar);
-        txtPasswordShow.setVisible(mostrar);
-        txtConfirmPassShow.setVisible(mostrar);
-    }
-    private void bindingPasswords(){
-        txtPassword.textProperty().addListener((observable,oldValue, newValue) ->
-                txtPasswordShow.setText(newValue));
-        txtConfirmPass.textProperty().addListener((observable, oldValue, newValue) ->
-                txtConfirmPassShow.setText(newValue));
-        txtPasswordShow.textProperty().addListener((observable, oldValue, newValue)->
-                txtPassword.setText(newValue));
-        txtConfirmPassShow.textProperty().addListener((observabe, oldValue, newValue)->
-                txtConfirmPass.setText(newValue));
-    }
-    private boolean validarPassword() throws Exception{
-        if (!txtPassword.getText().equals(txtConfirmPass.getText())){
-            throw new Exception("Las contraseñas con coinciden");
-        }
-        return txtPassword.getText().equals(txtConfirmPass.getText());
-
-    }
-
     public void registrarPersona(ActionEvent actionEvent) {
         try {
             if (validarPassword()) {
@@ -94,7 +69,30 @@ public class RegistrarPersonaControlador implements Initializable {
         }
     }
 
+    public void OnMostrarPassword(){
+        boolean mostrar = checkShowPass.isSelected();
+        txtPassword.setVisible(!mostrar);
+        txtConfirmPass.setVisible(!mostrar);
+        txtPasswordShow.setVisible(mostrar);
+        txtConfirmPassShow.setVisible(mostrar);
+    }
+    private void bindingPasswords(){
+        txtPassword.textProperty().addListener((observable,oldValue, newValue) ->
+                txtPasswordShow.setText(newValue));
+        txtConfirmPass.textProperty().addListener((observable, oldValue, newValue) ->
+                txtConfirmPassShow.setText(newValue));
+        txtPasswordShow.textProperty().addListener((observable, oldValue, newValue)->
+                txtPassword.setText(newValue));
+        txtConfirmPassShow.textProperty().addListener((observabe, oldValue, newValue)->
+                txtConfirmPass.setText(newValue));
+    }
+    private boolean validarPassword() throws Exception{
+        if (!txtPassword.getText().equals(txtConfirmPass.getText())){
+            throw new Exception("Las contraseñas con coinciden");
+        }
+        return txtPassword.getText().equals(txtConfirmPass.getText());
 
+    }
 
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo){
         Alert alert = new Alert(tipo);

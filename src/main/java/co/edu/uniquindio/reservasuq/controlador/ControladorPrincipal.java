@@ -42,13 +42,13 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
 
 
     @Override
-    public void crearInstalacion(String nombre,int aforo, float costo, List<Horario> horarios) {
-        reservasUQ.crearInstalacion(nombre, aforo, costo, horarios);
+    public void crearInstalacion(String id, String nombre,int aforo, float costo, java.time.LocalDateTime horaInicio, java.time.LocalDateTime horaFin) {
+        reservasUQ.crearInstalacion(id, nombre, aforo, costo, horaInicio, horaFin);
     }
 
     @Override
-    public Reserva crearReserva(String idInstalacion, String cedulaPersona, LocalDate diaReserva, String horaReserva) throws Exception {
-        return reservasUQ.crearReserva(idInstalacion, cedulaPersona, diaReserva, horaReserva);
+    public Reserva crearReserva(String tipoInstalacion, String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva) throws Exception {
+        return reservasUQ.crearReserva(tipoInstalacion, idInstalacion, cedula, diaReserva, horaReserva);
     }
 
 
