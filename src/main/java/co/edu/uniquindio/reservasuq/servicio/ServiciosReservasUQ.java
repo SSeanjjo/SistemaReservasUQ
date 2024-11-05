@@ -6,18 +6,19 @@ import co.edu.uniquindio.reservasuq.modelo.reserva.Reserva;
 import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ServiciosReservasUQ {
 
     Persona login(String correo, String contrasena) throws Exception;
 
-    void registrarPersona(String cedula, String nombre, TipoPersona tipoPersona, String correoInstitucional, String password) throws Exception;
+    void registrarPersona(String cedula, String nombre, String correoInstitucional, String contrasena,  TipoPersona tipoPersona) throws Exception;
 
     void crearInstalacion(String nombre, int aforo, float costo, List<Horario> horarios);
 
     Reserva crearReserva(String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva) throws Exception;
 
-    Persona obtenerPersona(String cedula);
+    Optional<Persona> obtenerPersona(String cedula);
 
     List<Reserva> listarTodasReservas();
 

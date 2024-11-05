@@ -8,12 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RegistrarPersonaControlador implements Initializable {
+//    private ControladorPrincipal controladorPrincipal;
+    ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
     ReservasUQ reservasUQ = ReservasUQ.getInstance();
     @FXML
     public TextField txtCedula;
@@ -64,20 +65,20 @@ public class RegistrarPersonaControlador implements Initializable {
             String cedula = txtCedula.getText();
             String nombre = txtNombre.getText();
             String correoInstitucional = txtCorreoInstitucional.getText();
-            String contrasena = txtPassword.getText();
+
+            String contrasena = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
+
             TipoPersona  tipoPersona = cbTipoPersona.getValue();
-            reservasUQ.registrarPersona(cedula, nombre, tipoPersona, correoInstitucional, contrasena);
+
+            reservasUQ.registrarPersona(cedula, nombre, correoInstitucional, contrasena, tipoPersona);
             limpiarFormularioRegistro();
-            mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);
-            ControladorPrincipal.cerrarVentana((txtCedula));
-        }
+            mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);}
 
-        } catch (Exception e) {
-            mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
-        }
+            ControladorPrincipal.cerrarVentana(txtCedula);
+            controladorPrincipal.navegarVentana("/profile.fxml", "Perfil");
 
+        } catch (Exception e) {mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);}
     }
-
 
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo){
         Alert alert = new Alert(tipo);

@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class ControladorPrincipal implements ServiciosReservasUQ {
 
@@ -35,8 +36,8 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
 
 
     @Override
-    public void registrarPersona(String cedula, String nombre, TipoPersona tipoPersona, String correoInstitucional, String password) throws Exception {
-        reservasUQ.registrarPersona(cedula, nombre, tipoPersona, correoInstitucional, password);
+    public void registrarPersona(String cedula, String nombre, String correoInstitucional, String contrasena, TipoPersona tipoPersona) throws Exception {
+        reservasUQ.registrarPersona(cedula, nombre, correoInstitucional, contrasena, tipoPersona);
     }
 
 
@@ -50,9 +51,12 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         return reservasUQ.crearReserva(idInstalacion, cedulaPersona, diaReserva, horaReserva);
     }
 
+
     @Override
-    public Persona obtenerPersona(String cedula) {
-        return reservasUQ.obtenerPersona(cedula);
+    public Optional<Persona> obtenerPersona(String cedula) {
+        return reservasUQ.getListaPersonas().stream()
+                .filter(persona -> persona.getCedula().equals(cedula))
+                .findFirst();
     }
 
     @Override
@@ -84,6 +88,7 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         try {
             // Cargar la vista
             FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
+
             Parent root = loader.load();
 
             // Crear la escena
@@ -103,12 +108,9 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         }
     }
 
-    public static void cerrarVentana(Node node) {
+    public static void cerrarVentana(Node node){
         Stage stage = (Stage) node.getScene().getWindow();
-            stage.close();
-        }
+        stage.close();
     }
 
-
-
-
+}
