@@ -1,6 +1,8 @@
 package co.edu.uniquindio.reservasuq.controlador;
 
+import co.edu.uniquindio.reservasuq.modelo.Persona;
 import co.edu.uniquindio.reservasuq.modelo.ReservasUQ;
+import co.edu.uniquindio.reservasuq.modelo.Sesion;
 import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +17,8 @@ import java.util.ResourceBundle;
 public class RegistrarPersonaControlador implements Initializable {
 //    private ControladorPrincipal controladorPrincipal;
     ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+    Sesion sesion = Sesion.getInstancia();
+    Persona persona = sesion.getPersona();
     ReservasUQ reservasUQ = ReservasUQ.getInstance();
     @FXML
     public TextField txtCedula;
@@ -60,25 +64,37 @@ public class RegistrarPersonaControlador implements Initializable {
 
     }
 
-    public void registrarPersona(ActionEvent actionEvent){
-        try { if(validarPassword()){
-            String cedula = txtCedula.getText();
-            String nombre = txtNombre.getText();
-            String correoInstitucional = txtCorreoInstitucional.getText();
+    public void registrarPersona(ActionEvent actionEvent) {
+        try {
+            if (validarPassword()) {
+                String cedula = txtCedula.getText();
+                String nombre = txtNombre.getText();
+                String correoInstitucional = txtCorreoInstitucional.getText();
+                String contrasena = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
+                TipoPersona tipoPersona = cbTipoPersona.getValue();
 
-            String contrasena = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
+                reservasUQ.registrarPersona(cedula, nombre, correoInstitucional, contrasena, tipoPersona);
 
-            TipoPersona  tipoPersona = cbTipoPersona.getValue();
+                for (Persona newUser : reservasUQ.getListaPersonas()) {
+                    if (newUser.getCedula().equals(cedula)) {
+                        persona = newUser;
+                        break;
+                    }
+                }
 
-            reservasUQ.registrarPersona(cedula, nombre, correoInstitucional, contrasena, tipoPersona);
-            limpiarFormularioRegistro();
-            mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);}
+                sesion.setPersona(persona);
+                limpiarFormularioRegistro();
+                mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);
 
-            ControladorPrincipal.cerrarVentana(txtCedula);
-            controladorPrincipal.navegarVentana("/profile.fxml", "Perfil");
-
-        } catch (Exception e) {mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);}
+                ControladorPrincipal.cerrarVentana(txtCedula);
+                controladorPrincipal.navegarVentana("/profile.fxml", "Perfil");
+            }
+        } catch (Exception e) {
+            mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
+
+
 
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo){
         Alert alert = new Alert(tipo);

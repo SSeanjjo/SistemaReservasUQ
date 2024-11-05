@@ -95,16 +95,6 @@ public class PerfilControlador implements Initializable {
         }
     }
 
-//    public void actualizarTabla() {
-//        if (persona != null) {
-//            observableList.setAll(reservasUQ.getListaReservas().stream()
-//                    .filter(reserva -> reserva.getCedula().equals(persona.getCedula()))
-//                    .collect(Collectors.toList()));
-//            tablaReservas.setItems(observableList);
-//        }
-//    }
-
-
     public void OnMostrarPassword(){
         boolean mostrar = checkShowPass.isSelected();
         txtPassword.setVisible(!mostrar);
@@ -118,11 +108,5 @@ public class PerfilControlador implements Initializable {
                 .forEach(System.out::println);
     }
 
-//    public void cargarReservas(ActionEvent actionEvent){
-//        for(Reserva reserva : reservasUQ.getListaReservas()){
-//            if(reserva.getCedula().equals(txtCedula.getText())){
-//                System.out.println(reserva);
-//            }
-//        }
-//    }
+
 }

@@ -40,15 +40,14 @@ public class LoginControlador {
                 if (validarPassword(txtPassword.getText(), persona.getContrasena())) {
                     sesion.setPersona(persona);
                     ControladorPrincipal.cerrarVentana(txtCorreo);
-                    controladorPrincipal.navegarVentana("/profile.fxml", "Perfil");
                     loginSuccessful = true;
+                    controladorPrincipal.navegarVentana("/profile.fxml", "Perfil");
                     break;
                 } else {
                     errorMsg = "Contraseña incorrecta";
                 }
             }
         }
-
         if (!loginSuccessful) {
             mostrarAlerta(errorMsg, Alert.AlertType.ERROR);
             limpiarFormularioRegistro();
