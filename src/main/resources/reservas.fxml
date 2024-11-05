@@ -22,15 +22,16 @@
     <TextField fx:id="txtCedula" minWidth="270.0" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
     <!-- Second Row -->
+
     <Label text="idInstalacion:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
     <TextField fx:id="txtidInstalacion" minWidth="270.0" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
     <!-- Third Row -->
-    <Label text="Día Reserva:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-    <DatePicker fx:id="dpDiaCita" prefWidth="250.0" prefHeight="30.0" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+    <Label text="Día Reserva:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+    <DatePicker fx:id="dpDiaReserva" prefWidth="250.0" prefHeight="30.0" GridPane.rowIndex="2" GridPane.columnIndex="1" />
 
-    <Label text="Hora:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-    <ComboBox fx:id="cbHoraCita" prefWidth="250.0" prefHeight="30.0" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+    <Label text="Hora:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+    <ComboBox fx:id="cbhoraReserva" prefWidth="250.0" prefHeight="30.0" GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
     <columnConstraints>
         <ColumnConstraints />

@@ -28,8 +28,7 @@ public class ReservaApplication extends Application {
             // Agregar personas por defecto
             AppReserva.registrarPersona("123", "Juan Pérez", "juan@mail.com", "1234", TipoPersona.ESTUDIANTE);
 
-//            AppReserva.registrarPersona("321", "Juan Pérez", TipoPersona.ESTUDIANTE, "juan@example.com", "4321");
-//            AppReserva.registrarPersona("123", "Ana Pérez", TipoPersona.ESTUDIANTE, "ana@example.com", "1234");
+
             }catch (Exception e) {
             e.printStackTrace();
         }
