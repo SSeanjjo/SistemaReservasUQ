@@ -104,35 +104,7 @@ public class ReservasUQ implements ServiciosReservasUQ {
         }
         return loginUsuario;
     }
-    /*@Override
-    public Persona login(String correo, String contrasena) throws Exception {
-        String ValidationMessage = "";
-        Persona loginUsuario = null;
 
-        if (correo == null || correo.isEmpty()) {
-            ValidationMessage += "El correo no puede ser nulo o vacio\n";
-        }
-        if (contrasena == null || contrasena.isEmpty()) {
-            ValidationMessage += "La contraseña no puede ser nula o vacia\n";
-        }
-        if (!ValidationMessage.isEmpty()) {
-            throw new Exception(ValidationMessage);
-        }
-
-        for (Persona usuarioRegistrado : listaPersonas) {
-            if (usuarioRegistrado.getCorreoInstitucional().equals(correo)) {
-                if (BCrypt.checkpw(contrasena, usuarioRegistrado.getPassword())) {
-                    loginUsuario = usuarioRegistrado;
-                } else {
-                    throw new Exception("La contraseña es incorrecta");
-                }
-            } else {
-                throw new Exception("El correo no esta registrado");
-            }
-        }
-        return loginUsuario;
-    }
-*/
 
     @Override
     public void crearInstalacion(String nombre, int aforo, float costo, List<Horario> horarios) {

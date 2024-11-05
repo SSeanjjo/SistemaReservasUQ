@@ -20,6 +20,7 @@ public class LoginControlador {
     Sesion sesion = Sesion.getInstancia();
     Persona persona = sesion.getPersona();
 
+
     ReservasUQ reservasUQ = ReservasUQ.getInstance();
 //    Persona sesionActual =  sesion.setPersona(persona);
 
@@ -34,18 +35,17 @@ public class LoginControlador {
     public void login(ActionEvent actionEvent) {
         boolean loginSuccessful = false; // Track if a valid user is found
         for (Persona persona : reservasUQ.getListaPersonas()) {
-            if (txtCorreo.getText().equals(persona.getCorreoInstitucional())
-                    && validarPassword(txtPassword.getText(), persona.getPassword())) {
+            if (txtCorreo.getText().equals(persona.getCorreoInstitucional()) && validarPassword(txtPassword.getText(), persona.getPassword())) {
                 sesion.setPersona(persona);
                 controladorPrincipal.navegarVentana("/profile.fxml", "Perfil");
                 loginSuccessful = true;
+                controladorPrincipal.cerrarVentana(txtCorreo);
                 break; // Exit the loop once a match is found
             }
         }
 
         if (!loginSuccessful) {
             mostrarAlerta("Correo o contraseña incorrectos", Alert.AlertType.ERROR);
-            limpiarFormularioRegistro();
         }
     }
 

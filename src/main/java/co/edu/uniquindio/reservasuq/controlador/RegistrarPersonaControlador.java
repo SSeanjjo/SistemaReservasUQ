@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,14 +64,14 @@ public class RegistrarPersonaControlador implements Initializable {
             String cedula = txtCedula.getText();
             String nombre = txtNombre.getText();
             String correoInstitucional = txtCorreoInstitucional.getText();
-//            String contrasena = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
-            String contrasena = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
-
+            String contrasena = txtPassword.getText();
             TipoPersona  tipoPersona = cbTipoPersona.getValue();
             reservasUQ.registrarPersona(cedula, nombre, tipoPersona, correoInstitucional, contrasena);
             limpiarFormularioRegistro();
-            mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);}
-            ControladorPrincipal.cerrarVentana(txtCedula);
+            mostrarAlerta("Persona registrada correctamente", Alert.AlertType.INFORMATION);
+            ControladorPrincipal.cerrarVentana((txtCedula));
+        }
+
         } catch (Exception e) {
             mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }

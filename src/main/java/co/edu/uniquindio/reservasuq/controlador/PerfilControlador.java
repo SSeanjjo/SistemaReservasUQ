@@ -1,52 +1,71 @@
 package co.edu.uniquindio.reservasuq.controlador;
 
-import co.edu.uniquindio.reservasuq.modelo.Persona;
 import co.edu.uniquindio.reservasuq.modelo.ReservasUQ;
-import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
-import co.edu.uniquindio.reservasuq.modelo.reserva.Reserva;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
-public class PerfilControlador {
+import java.net.URL;
+import java.security.PublicKey;
+import java.util.ResourceBundle;
+
+
+public class PerfilControlador implements Initializable {
     ReservasUQ reservasUQ = ReservasUQ.getInstance();
 
     @FXML
-    public TextField txtCedula;
-    @FXML
-    public TextField txtNombre;
-    @FXML
-    public TextField txtCorreoInstitucional;
-    @FXML
-    private ComboBox<TipoPersona> cbTipoPersona;
-    @FXML
-    private PasswordField txtPassword;
-    @FXML
-    private PasswordField txtConfirmPass;
-    @FXML
-    private TextField txtPasswordShow;
-    @FXML
-    private TextField txtConfirmPassShow;
-    @FXML
-    private CheckBox checkShowPass;
+    private MenuItem btnEditarDatos;
 
-    public void OnMostrarPassword(){
-        boolean mostrar = checkShowPass.isSelected();
-        txtPassword.setVisible(!mostrar);
-        txtConfirmPass.setVisible(!mostrar);
-        txtPasswordShow.setVisible(mostrar);
-        txtConfirmPassShow.setVisible(mostrar);
-    }
+    @FXML
+    private MenuItem btnCerrarsesion;
 
-    public void cargarReservas(ActionEvent actionEvent){
-        for(Reserva reserva : reservasUQ.getListaReservas()){
-            if(reserva.getCedula().equals(txtCedula.getText())){
-                System.out.println(reserva);
-            }
+    @FXML
+    private Label lblName;
+
+    @FXML
+    private TableView<?> tablaReservas;
+
+    @FXML
+    private TableColumn<?, ?> idColumn;
+
+    @FXML
+    private TableColumn<?, ?> horaColumn;
+
+    @FXML
+    private TableColumn<?, ?> fechaColumn;
+
+    @FXML
+    private TableColumn<?, ?> instalacionColumn;
+
+    @FXML
+    private Label lblName1;
+        @FXML
+        void onCancelarReserva(ActionEvent event) {
+
+        }
+
+        @FXML
+        void onCerrarSesion(ActionEvent event) {
+        }
+
+        @FXML
+        void onCrearReserva(ActionEvent event) {
+
+        }
+
+        @FXML
+        void onEditarDatos(ActionEvent event) {
+
+        }
+        @Override
+        public void initialize(URL location, ResourceBundle resources){
+
         }
     }
 
-}
+
+

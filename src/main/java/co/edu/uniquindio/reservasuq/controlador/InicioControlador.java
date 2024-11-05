@@ -15,4 +15,5 @@ public class InicioControlador{
     public void irRegistroCliente(ActionEvent actionEvent) {
         controladorPrincipal.navegarVentana("/registro.fxml", "Registro Persona");
     }
+
 }

@@ -16,6 +16,7 @@
       alignment="center" prefHeight="400.0" prefWidth="400.0" spacing="20.0" >
 
 
+
     <Label text="Bienvenido a la app ReservasUQ" >
         <font>
             <Font size="18.0" />
