@@ -25,21 +25,7 @@ public class Instalaciones {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
     }
-    /*public Instalaciones(String id, String nombre, int aforo, float costo, LocalDateTime horaInicio, LocalDateTime horaFin) {
-        this.id = String.valueOf(id);
-        this.nombre = nombre;
-        this.aforo = aforo;
-        this.costo = costo;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
 
-    }*/
-
-//    public Instalaciones withId(Integer id) {
-//        this.id = String.valueOf(id); // Convert Integer to String
-//        return this;
-//    }
+    }
 
 
-
-}

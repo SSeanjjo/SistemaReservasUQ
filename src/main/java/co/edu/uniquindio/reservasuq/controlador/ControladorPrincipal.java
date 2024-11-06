@@ -84,7 +84,7 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         alert.showAndWait();
     }
 
-    public void navegarVentana(String nombreArchivoFxml, String tituloVentana) {
+    public  void navegarVentana(String nombreArchivoFxml, String tituloVentana) {
         try {
             // Cargar la vista
             FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
@@ -97,7 +97,7 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
             // Crear un nuevo escenario (ventana)
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.setTitle(tituloVentana);
 
             // Mostrar la nueva ventana
@@ -108,7 +108,7 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         }
     }
 
-    public static void cerrarVentana(Node node){
+    public void cerrarVentana(Node node){
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
     }

@@ -70,7 +70,7 @@ public class RegistrarReservaControlador implements Initializable {
             limpiarFormularioReserva();
 
             controladorPrincipal.navegarVentana("/reservacion.fxml", "Reservacion");
-            ControladorPrincipal.cerrarVentana(txtCedula);
+            controladorPrincipal.cerrarVentana(txtCedula);
 
         } catch (Exception e) {
             mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);

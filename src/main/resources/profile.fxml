@@ -1,70 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox alignment="CENTER" prefHeight="677.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.reservasuq.controlador.PerfilControlador">
-
-    <!-- Left VBox for TableView -->
-    <!-- Right VBox for User Data Fields -->
-    <VBox alignment="TOP_CENTER" prefWidth="400.0" spacing="20.0">
-        <Label text="Registro Usuario" textFill="#0f0f0f">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-
-        <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
-            <!-- First Row -->
-            <Label text="Cedula:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField fx:id="txtCedula" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-            <!-- Second Row -->
-            <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <TextField fx:id="txtNombre" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-            <!-- Fourth Row -->
-            <Label text="correoInstitucional:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-            <TextField fx:id="txtCorreoInstitucional" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-            <!-- Fifth Row -->
-            <Label text="Tipo de Persona:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <ComboBox fx:id="cbTipoPersona" minWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-            <!-- Password Fields -->
-            <Label text="Contraseña" GridPane.rowIndex="5" />
-            <PasswordField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="txtPasswordShow" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-            <Label text="Mostrar contraseña" GridPane.rowIndex="7" />
-            <CheckBox fx:id="checkShowPass" mnemonicParsing="false" onAction="#OnMostrarPassword" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-
-        </GridPane>
-    </VBox>
-
-    <VBox alignment="CENTER_LEFT" prefWidth="300.0" spacing="10.0">
-        <Label text="Lista de citas">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <TableView fx:id="tablaReservas" VBox.vgrow="ALWAYS">
-            <columns>
-                <TableColumn fx:id="colidInstalacion" text="Instalación" />
-                <TableColumn fx:id="colCedula" text="Cédula" />
-                <TableColumn fx:id="diaReserva" text="Día Reserva" />
-                <TableColumn fx:id="horaReserva" text="Hora Reserva" />
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-            </columnResizePolicy>
-        </TableView>
-        <Button onAction="#cargarReservas" prefHeight="40.0" prefWidth="160.0" text="Cargar Reservas" VBox.vgrow="SOMETIMES">
-         <VBox.margin>
-            <Insets top="10.0" />
-         </VBox.margin></Button>
-    </VBox>
+<HBox alignment="CENTER" prefHeight="559.0" prefWidth="781.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.reservasuq.controlador.PerfilControlador">
+   <children>
+      <AnchorPane prefHeight="541.0" prefWidth="781.0">
+         <children>
+            <MenuButton layoutX="638.0" layoutY="68.0" mnemonicParsing="false" text="Perfil">
+              <items>
+                <MenuItem fx:id="btnEditarDatos" mnemonicParsing="false" onAction="#onEditarDatos" text="Editar datos" />
+                <MenuItem fx:id="btnCerrarsesion" mnemonicParsing="false" onAction="#onCerrarSesion" text="Cerrar sesión" />
+              </items>
+            </MenuButton>
+            <Label layoutX="62.0" layoutY="67.0" text="Mis reservas">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblName" layoutX="62.0" layoutY="141.0" text="Name" />
+            <TableView fx:id="tablaReservas" layoutX="65.0" layoutY="202.0" prefHeight="234.0" prefWidth="633.0">
+              <columns>
+                <TableColumn fx:id="idColumn" prefWidth="136.0" text="ID" />
+                  <TableColumn fx:id="horaColumn" prefWidth="115.0" resizable="false" text="Hora" />
+                <TableColumn fx:id="fechaColumn" prefWidth="155.0" text="Fecha" />
+                  <TableColumn fx:id="instalacionColumn" prefWidth="230.0" text="Instalación" />
+              </columns>
+            </TableView>
+            <Button layoutX="65.0" layoutY="465.0" mnemonicParsing="false" onAction="#onCrearReserva" prefHeight="25.0" prefWidth="106.0" text="Crear Reserva" />
+            <Button layoutX="190.0" layoutY="465.0" mnemonicParsing="false" onAction="#onCancelarReserva" text="Cancelar Reserva" />
+            <Label fx:id="lblCargo" layoutX="638.0" layoutY="141.0" text="Cargo" />
+         </children>
+      </AnchorPane>
+   </children>
 
 </HBox>

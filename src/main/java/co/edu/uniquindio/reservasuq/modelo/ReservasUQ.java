@@ -124,42 +124,41 @@ public class ReservasUQ implements ServiciosReservasUQ {
 //    }
 
     @Override
-    public Reserva crearReserva(String tipoInstalacion, String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva ) throws Exception {
-        StringBuilder validationMessage = new StringBuilder();
-
-        if (idInstalacion == null || idInstalacion.isEmpty()) {validationMessage.append("El id de la instalación no puede ser nulo o vacío.\n");}
-        if (cedula == null || cedula.isEmpty()) {validationMessage.append("La cédula no puede ser nula o vacía.\n");}
-        if (diaReserva == null) {validationMessage.append("La fecha de la reserva no puede ser nula.\n");}
-        if (horaReserva == null || horaReserva.isEmpty()) {validationMessage.append("La hora de la reserva no puede ser nula o vacía.\n");}
-
-        if (validationMessage.length() > 0) {
-            throw new Exception(validationMessage.toString());
+    public Reserva crearReserva(String tipoInstalacion, String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva) throws Exception {
+        // Validación de parámetros
+        if (idInstalacion == null || idInstalacion.isEmpty() ||
+                cedula == null || cedula.isEmpty() ||
+                diaReserva == null ||
+                horaReserva == null || horaReserva.isEmpty()) {
+            throw new Exception("Todos los campos son obligatorios.");
         }
 
         LocalDateTime fechaReserva = LocalDateTime.of(diaReserva, LocalTime.parse(horaReserva));
 
-        boolean instalacionEncontrada = false;
-        for (Instalaciones instalacion : listaInstalaciones) {
-            if (instalacion.getId().equals(String.valueOf(idInstalacion))) {
-                instalacionEncontrada = true;
-                LocalDateTime horaInicio = instalacion.getHoraInicio();
-                LocalDateTime horaFin = instalacion.getHoraFin();
 
-                if (!fechaReserva.isBefore(horaInicio) || !fechaReserva.isAfter(horaFin)) {throw new Exception("La reserva debe estar dentro del horario de la instalación.");}
-                if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {throw new Exception("El horario solicitado ya está reservado.");}
+        Instalaciones instalacion = listaInstalaciones.stream()
+                .filter(i -> i.getId().equals(idInstalacion))
+                .findFirst()
+                .orElseThrow(() -> new Exception("No hay ninguna instalación asociada al ID ingresado."));
 
-                Reserva reserva = Reserva.builder()
-                        .idInstalacion(idInstalacion)
-                        .cedula(cedula)
-                        .diaReserva(diaReserva)
-                        .horaReserva(horaReserva)
-                        .build();
-                listaReservas.add(reserva);
-                return reserva;
-            }
-        }if (!instalacionEncontrada) {throw new Exception("No hay ninguna instalación asociada al ID ingresado.");}
-        return null;
+        if (!fechaReserva.isBefore(instalacion.getHoraInicio()) || !fechaReserva.isAfter(instalacion.getHoraFin())) {
+            throw new Exception("La reserva debe estar dentro del horario de la instalación.");
+        }
+
+        if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {
+            throw new Exception("El horario solicitado ya está reservado.");
+        }
+        Reserva reserva = Reserva.builder()
+                .idInstalacion(idInstalacion)
+                .cedulaReservante(cedula)
+                .diaReserva(diaReserva)
+                .horaReserva(horaReserva)
+                .build();
+
+        listaReservas.add(reserva);
+        return reserva;
     }
+
 
     private boolean isAvailable(String idInstalacion, LocalDate diaReserva, String horaReserva) {
         for (Reserva reserva : listaReservas) {

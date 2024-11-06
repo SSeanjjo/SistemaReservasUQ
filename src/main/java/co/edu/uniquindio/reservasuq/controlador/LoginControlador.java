@@ -40,7 +40,7 @@ public class LoginControlador {
             if (txtCorreo.getText().equals(persona.getCorreoInstitucional())) {
                 if (validarPassword(txtPassword.getText(), persona.getContrasena())) {
                     sesion.setPersona(persona);
-                    ControladorPrincipal.cerrarVentana(txtCorreo);
+                    controladorPrincipal.cerrarVentana(txtCorreo);
                     loginSuccessful = true;
                     controladorPrincipal.navegarVentana("/profile.fxml", "Perfil");
                     break;
