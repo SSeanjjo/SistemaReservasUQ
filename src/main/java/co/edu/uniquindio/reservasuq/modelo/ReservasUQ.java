@@ -88,26 +88,64 @@ public class ReservasUQ implements ServiciosReservasUQ {
         return usuarioRegistrado;
     }
 
+//    @Override
+//    public Reserva crearReserva(String idInstalacion, String cedula, String tipoInstalacion, LocalDate diaReserva, String horaReserva) throws Exception {
+//        StringBuilder validationMessage = new StringBuilder();
+//
+//        if (idInstalacion == null || idInstalacion.isEmpty()) {validationMessage.append("El id de la instalación no puede ser nulo o vacío.\n");}
+//        if (cedula == null || cedula.isEmpty()) {validationMessage.append("La cédula no puede ser nula o vacía.\n");}
+//        if (diaReserva == null) {validationMessage.append("La fecha de la reserva no puede ser nula.\n");}
+//        if (horaReserva == null || horaReserva.isEmpty()) {validationMessage.append("La hora de la reserva no puede ser nula o vacía.\n");}
+//        if (obtenerPersona(cedula).isPresent()) {throw new Exception("La cédula ya está registrada");}
+//
+//        if (validationMessage.length() > 0) {throw new Exception(validationMessage.toString());}
+//
+//        LocalDateTime fechaReserva = LocalDateTime.of(diaReserva, LocalTime.parse(horaReserva));
+//
+//        for (Instalaciones instalacion : listaInstalaciones) {
+//            if (instalacion.getId().equals(idInstalacion)) {
+//                LocalDateTime horaInicio = instalacion.getHoraInicio();
+//                LocalDateTime horaFin = instalacion.getHoraFin();
+//
+//                if (fechaReserva.isBefore(horaInicio) || fechaReserva.isAfter(horaFin)) {throw new Exception("La reserva debe estar dentro del horario de la instalación.");}
+//                if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {throw new Exception("El horario solicitado ya está reservado.");}
+//
+//                Reserva reserva = Reserva.builder()
+//                        .idInstalacion(idInstalacion)
+//                        .cedula(cedula)
+//                        .diaReserva(diaReserva)
+//                        .horaReserva(horaReserva)
+//                        .build();
+//                listaReservas.add(reserva);
+//                return reserva;
+//            } else if (!instalacion.getId().equals(idInstalacion)){ throw new Exception("No hay ninguna instalación asociada al ID ingresado.");}
+//        }
+//        return null;
+//    }
+
     @Override
-    public Reserva crearReserva(String idInstalacion, String cedula, String tipoInstalacion, LocalDate diaReserva, String horaReserva) throws Exception {
+    public Reserva crearReserva(String tipoInstalacion, String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva ) throws Exception {
         StringBuilder validationMessage = new StringBuilder();
 
         if (idInstalacion == null || idInstalacion.isEmpty()) {validationMessage.append("El id de la instalación no puede ser nulo o vacío.\n");}
         if (cedula == null || cedula.isEmpty()) {validationMessage.append("La cédula no puede ser nula o vacía.\n");}
         if (diaReserva == null) {validationMessage.append("La fecha de la reserva no puede ser nula.\n");}
         if (horaReserva == null || horaReserva.isEmpty()) {validationMessage.append("La hora de la reserva no puede ser nula o vacía.\n");}
-        if (obtenerPersona(cedula).isPresent()) {throw new Exception("La cédula ya está registrada");}
 
-        if (validationMessage.length() > 0) {throw new Exception(validationMessage.toString());}
+        if (validationMessage.length() > 0) {
+            throw new Exception(validationMessage.toString());
+        }
 
         LocalDateTime fechaReserva = LocalDateTime.of(diaReserva, LocalTime.parse(horaReserva));
 
+        boolean instalacionEncontrada = false;
         for (Instalaciones instalacion : listaInstalaciones) {
-            if (instalacion.getId().equals(idInstalacion)) {
+            if (instalacion.getId().equals(String.valueOf(idInstalacion))) {
+                instalacionEncontrada = true;
                 LocalDateTime horaInicio = instalacion.getHoraInicio();
                 LocalDateTime horaFin = instalacion.getHoraFin();
 
-                if (fechaReserva.isBefore(horaInicio) || fechaReserva.isAfter(horaFin)) {throw new Exception("La reserva debe estar dentro del horario de la instalación.");}
+                if (!fechaReserva.isBefore(horaInicio) || !fechaReserva.isAfter(horaFin)) {throw new Exception("La reserva debe estar dentro del horario de la instalación.");}
                 if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {throw new Exception("El horario solicitado ya está reservado.");}
 
                 Reserva reserva = Reserva.builder()
@@ -119,10 +157,9 @@ public class ReservasUQ implements ServiciosReservasUQ {
                 listaReservas.add(reserva);
                 return reserva;
             }
-        }
-        throw new Exception("No hay ninguna instalación asociada al ID ingresado.");
+        }if (!instalacionEncontrada) {throw new Exception("No hay ninguna instalación asociada al ID ingresado.");}
+        return null;
     }
-
 
     private boolean isAvailable(String idInstalacion, LocalDate diaReserva, String horaReserva) {
         for (Reserva reserva : listaReservas) {
@@ -135,9 +172,24 @@ public class ReservasUQ implements ServiciosReservasUQ {
         return true; // Time slot available
     }
 
-
     @Override
     public void crearInstalacion(String id, String nombre, int aforo, float costo, LocalDateTime horaInicio, LocalDateTime horaFin) {
+        String validationMessage = "";
+        if (nombre == null || nombre.isEmpty()) validationMessage += "El nombre de la instalación no puede ser nulo o vacío\n";
+        if (aforo <= 0) validationMessage += "El aforo de la instalación no puede ser menor o igual a 0\n";
+        if (costo < 0) validationMessage += "El costo de la instalación no puede ser menor o igual a 0\n";
+        if (horaInicio == null) validationMessage += "La hora de inicio no puede ser nula\n";
+        if (horaFin == null) validationMessage += "La hora de fin no puede ser nula\n";
+
+        if (!validationMessage.isEmpty()) throw new IllegalArgumentException(validationMessage);
+
+        listaInstalaciones.add(new Instalaciones(id, nombre, aforo, costo, horaInicio, horaFin));
+    }
+
+
+    /*@Override
+    public void crearInstalacion(String id, String nombre, int aforo, float costo, LocalDateTime horaInicio, LocalDateTime horaFin) {
+
         String ValidationMessage = "";
         if (nombre == null || nombre.isEmpty()) {
             ValidationMessage += "El nombre de la instalacion no puede ser nulo o vacio\n";
@@ -156,9 +208,9 @@ public class ReservasUQ implements ServiciosReservasUQ {
         if (horaFin == null || horaFin.isAfter(LocalDateTime.MAX.minusHours(20))) {
             ValidationMessage += "La hora de fin no puede ser nula\n";
         }
-        Instalaciones instalacion = new Instalaciones(id, nombre, aforo, costo, horaInicio, horaFin);
-        listaInstalaciones.add(instalacion);
-    }
+        else {Instalaciones instalacion = new Instalaciones(id, nombre, aforo, costo, horaInicio, horaFin);
+        listaInstalaciones.add(instalacion);}
+    }*/
 
     @Override
     public Optional<Persona> obtenerPersona(String cedula) {

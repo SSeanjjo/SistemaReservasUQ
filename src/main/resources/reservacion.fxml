@@ -14,37 +14,27 @@
         </Label>
 
         <GridPane alignment="CENTER" hgap="20.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="473.0" vgap="20.0">
+
+            <Label text="Tipo Instalacion:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <ComboBox fx:id="cbTipoInstalaciones" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             <!-- First Row -->
-            <Label text="idInstalacion:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField fx:id="txtidInstalacion" minWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="ID Instalacion:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="txtidInstalacion" minWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <!-- Second Row -->
-            <Label text="Cedula:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <TextField fx:id="txtCedula" minWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Cedula:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="txtCedula" minWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <!-- Third Row -->
-            <Label text="Tipo Instalacion:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <ComboBox fx:id="cbTipoInstalaciones" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
             <!-- Fourth Row -->
             <Label text="Día Reserva:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
             <DatePicker fx:id="dpDiaReserva" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <!-- Fifth Row -->
             <Label text="Hora:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
             <ComboBox fx:id="cbhoraReserva" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
-
         </GridPane>
 
         <!-- Button at the bottom of the VBox -->
-        <Button onAction="#registrarReserva" prefHeight="40.0" prefWidth="160.0" text="Registrar" />
+        <Button onAction="#crearReserva" prefHeight="40.0" prefWidth="160.0" text="Registrar" />
     </VBox>
 
     <VBox alignment="TOP_CENTER" prefWidth="400.0" spacing="20.0">
@@ -63,7 +53,7 @@
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                 </columnResizePolicy>
             </TableView>
-            <Button onAction="#cargarReservas" prefHeight="40.0" prefWidth="160.0" text="Cargar Reservas" VBox.vgrow="SOMETIMES">
+            <Button onAction="#cargarIntalaciones" prefHeight="40.0" prefWidth="160.0" text="Cargar Reservas" VBox.vgrow="SOMETIMES">
                 <VBox.margin>
                     <Insets top="10.0" />
                 </VBox.margin></Button>

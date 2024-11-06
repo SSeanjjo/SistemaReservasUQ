@@ -42,6 +42,10 @@ public class ReservaApplication extends Application {
             AppReserva.crearInstalacion("07", "Aulas de estudio grupal", 50, 0, LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)));
             AppReserva.crearInstalacion("08", "Salas de estudio individual", 50, 0, LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)));
 
+            AppReserva.crearReserva("Pista de atletismo", "01", "123", LocalDate.now(), "6:00");
+            AppReserva.crearReserva("Piscina", "02", "123", LocalDate.now(), "7:00");
+            AppReserva.crearReserva("Gimnasio", "03", "123", LocalDate.now(), "8:00");
+            AppReserva.crearReserva("Cancha de fútbol", "05", "123", LocalDate.now(), "8:00");
             }catch (Exception e) {
             e.printStackTrace();
         }

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ServiciosReservasUQ {
-
     Persona login(String correo, String contrasena) throws Exception;
 
     void registrarPersona(String cedula, String nombre, String correoInstitucional, String contrasena,  TipoPersona tipoPersona) throws Exception;
