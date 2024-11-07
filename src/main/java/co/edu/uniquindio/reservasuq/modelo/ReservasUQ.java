@@ -88,6 +88,333 @@ public class ReservasUQ implements ServiciosReservasUQ {
         return usuarioRegistrado;
     }
 
+    @Override
+    public Reserva crearReserva(String tipoInstalacion, String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva) throws Exception {
+        // Validate required parameters
+        if (idInstalacion == null || idInstalacion.isEmpty() ||
+                cedula == null || cedula.isEmpty() ||
+                diaReserva == null ||
+                horaReserva == null || horaReserva.isEmpty()) {
+            throw new Exception("Todos los campos son obligatorios.");
+        }
+
+        // Convert date and time into LocalDateTime
+        LocalDateTime fechaReserva = LocalDateTime.of(diaReserva, LocalTime.parse(horaReserva));
+
+        // Find the installation by ID
+        Instalaciones instalacion = listaInstalaciones.stream()
+                .filter(i -> i.getId().equals(idInstalacion))
+                .findFirst()
+                .orElseThrow(() -> new Exception("No hay ninguna instalación asociada al ID ingresado."));
+
+        // Check if the installation is available
+        if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {
+            throw new Exception("El horario solicitado ya está reservado.");
+        }
+
+        // Check if reservation time falls within installation operating hours
+//        if (fechaReserva.isBefore(instalacion.getHoraInicio()) || fechaReserva.isAfter(instalacion.getHoraFin().minusMinutes(1))) {
+//            throw new Exception("La reserva debe estar dentro del horario de la instalación.");
+//        }
+
+        // Get the user and calculate the cost based on the installation and user type
+        Persona persona = obtenerPersona(cedula).orElseThrow(() -> new Exception("Persona no encontrada"));
+        double costoReserva = calcularCosto(tipoInstalacion, persona.getTipoPersona().name());
+
+        // Create and add the reservation to the list, now with the calculated cost
+        Reserva reserva = Reserva.builder()
+                .idInstalacion(idInstalacion)
+                .cedula(cedula)
+                .diaReserva(diaReserva)
+                .horaReserva(horaReserva)
+                .costo(costoReserva)  // Ensure cost is included in the reservation
+                .build();
+        listaReservas.add(reserva);
+
+        return reserva;
+    }
+
+    /*
+    @Override
+    public Reserva crearReserva(String tipoInstalacion, String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva) throws Exception {
+        // Validate required parameters
+        if (idInstalacion == null || idInstalacion.isEmpty() ||
+                cedula == null || cedula.isEmpty() ||
+                diaReserva == null ||
+                horaReserva == null || horaReserva.isEmpty()) {
+            throw new Exception("Todos los campos son obligatorios.");
+        }
+
+        // Convert date and time into LocalDateTime
+        LocalDateTime fechaReserva = LocalDateTime.of(diaReserva, LocalTime.parse(horaReserva));
+
+        // Find the installation by ID
+        Instalaciones instalacion = listaInstalaciones.stream()
+                .filter(i -> i.getId().equals(idInstalacion))
+                .findFirst()
+                .orElseThrow(() -> new Exception("No hay ninguna instalación asociada al ID ingresado."));
+
+        // Check if the installation is available
+        if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {
+            throw new Exception("El horario solicitado ya está reservado.");
+        }
+
+        // Check if reservation time falls within installation operating hours
+        if (fechaReserva.isBefore(instalacion.getHoraInicio()) || fechaReserva.isAfter(instalacion.getHoraFin().minusMinutes(1))) {
+            throw new Exception("La reserva debe estar dentro del horario de la instalación.");
+        }
+
+
+        /*if (fechaReserva.isBefore(instalacion.getHoraInicio()) || fechaReserva.isAfter(instalacion.getHoraFin())) {
+            throw new Exception("La reserva debe estar dentro del horario de la instalación.");
+        }
+
+        // Get the user and calculate the cost based on the installation and user type
+        Persona persona = obtenerPersona(cedula).orElseThrow(() -> new Exception("Persona no encontrada"));
+        double costoReserva = calcularCosto(tipoInstalacion, persona.getTipoPersona().name());
+
+        // Create and add the reservation to the list, now with the calculated cost
+        Reserva reserva = Reserva.builder()
+                .idInstalacion(idInstalacion)
+                .cedula(cedula)
+                .diaReserva(diaReserva)
+                .horaReserva(horaReserva)
+                .costo(costoReserva)  // Ensure cost is included in the reservation
+                .build();
+        listaReservas.add(reserva);
+
+        return reserva;
+    }*/
+
+    public double calcularCosto(String tipoInstalacion, String tipoPersona) {
+        // Find the selected installation
+        Instalaciones instalacion = listaInstalaciones.stream()
+                .filter(i -> i.getNombre().equals(tipoInstalacion))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Instalación no encontrada"));
+
+        // Base cost of the installation
+        double baseCost = instalacion.getCosto();
+
+        // Apply discount based on person type
+        switch (tipoPersona) {
+            case "ESTUDIANTE":
+                return baseCost * 1.0;  // No discount for students
+            case "PROFESOR":
+                return baseCost * 0.5;  // 50% discount for professors
+            case "VISITANTE":
+                return baseCost;  // No discount for visitors
+            default:
+                return baseCost * 1.1;  // 10% surcharge for unrecognized types
+        }
+    }
+
+    /*
+    public double calcularCosto(String tipoInstalacion, String tipoPersona) {
+        // Base cost for the installation type
+        double baseCost = listaInstalaciones.stream()
+                .filter(instalacion -> instalacion.getNombre().equals(tipoInstalacion))
+                .findFirst()
+                .map(Instalaciones::getCosto)
+                .orElse(10000.0f); // Default base cost if installation type not found
+
+        // Apply discount or surcharge based on user type
+        double tarifa;
+        switch (tipoPersona) {
+            case "ESTUDIANTE":
+                tarifa = baseCost * 1; // 20% discount for students
+                break;
+            case "PROFESOR":
+                tarifa = baseCost * 0.5; // 10% discount for professors
+                break;
+            case "VISITANTE":
+                tarifa = baseCost; // No discount for visitors
+                break;
+            default:
+                tarifa = baseCost * 1.1; // 10% surcharge for others
+                break;
+        }
+        return tarifa;
+    }*/
+/*
+    @Override
+    public Reserva crearReserva(String tipoInstalacion, String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva, double costo) throws Exception {
+        // Validación de parámetros
+        if (idInstalacion == null || idInstalacion.isEmpty() ||
+                cedula == null || cedula.isEmpty() ||
+                diaReserva == null ||
+                horaReserva == null || horaReserva.isEmpty()) {
+            throw new Exception("Todos los campos son obligatorios.");
+        }
+
+        LocalDateTime fechaReserva = LocalDateTime.of(diaReserva, LocalTime.parse(horaReserva));
+
+        Instalaciones instalacion = listaInstalaciones.stream()
+                .filter(i -> i.getId().equals(idInstalacion))
+                .findFirst()
+                .orElseThrow(() -> new Exception("No hay ninguna instalación asociada al ID ingresado."));
+
+
+        if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {
+            throw new Exception("El horario solicitado ya está reservado.");
+        }
+
+        boolean instalacionEncontrada = false;
+
+        for (Instalaciones instalaciones : listaInstalaciones) {
+            if (instalaciones.getId().equals(idInstalacion)) {
+                instalacionEncontrada = true;
+                LocalDateTime horaInicio = instalaciones.getHoraInicio();
+                LocalDateTime horaFin = instalaciones.getHoraFin();
+
+                // Validate that the reservation time falls within installation hours
+//                if (fechaReserva.isBefore(horaInicio) || fechaReserva.isAfter(horaFin)) {
+//                    throw new Exception("La reserva debe estar dentro del horario de la instalación.");
+//                }
+//                if (fechaReserva.isBefore(horaInicio) || fechaReserva.isAfter(horaFin)) {
+//                    throw new Exception("La reserva debe estar dentro del horario de la instalación.");
+//                }
+
+                // Additional checks for availability and cost calculation
+                if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {
+                    throw new Exception("El horario solicitado ya está reservado.");
+                }
+
+                Persona persona = obtenerPersona(cedula).orElseThrow(() -> new Exception("Persona no encontrada"));
+                double costoReserva = calcularCosto(tipoInstalacion, persona.getTipoPersona().name(), cedula);
+
+                Reserva reserva = Reserva.builder()
+                        .idInstalacion(idInstalacion)
+                        .cedula(cedula)
+                        .diaReserva(diaReserva)
+                        .horaReserva(horaReserva)
+                        .costo(costoReserva)
+                        .build();
+                listaReservas.add(reserva);
+                return reserva;
+            }
+        }
+        if (!instalacionEncontrada) {
+            throw new Exception("No hay ninguna instalación asociada al ID ingresado.");
+        }
+        return null;
+    }
+
+    public double calcularCosto(String tipoInstalacion, String cedula) throws Exception {
+        Persona persona = obtenerPersona(cedula)
+                .orElseThrow(() -> new Exception("Persona no encontrada"));
+        Instalaciones instalacion = listaInstalaciones.stream()
+                .filter(i -> i.getNombre().equals(tipoInstalacion))
+                .findFirst()
+                .orElseThrow(() -> new Exception("Instalación no encontrada"));
+
+        double baseCost = instalacion.getCosto();
+        double tarifa;
+        switch (persona.getTipoPersona().name()) {
+            case "ESTUDIANTE":
+                tarifa = baseCost * 1.0;
+                break;
+            case "PROFESOR":
+                tarifa = baseCost * 0.5;
+                break;
+            case "VISITANTE":
+                tarifa = baseCost;
+                break;
+            default:
+                tarifa = baseCost * 1.1; // Default for other types
+        }
+        return tarifa;
+    }
+*/
+
+
+/*
+    public double calcularCosto(String tipoInstalacion, String tipoPersona, String cedula){
+        double tarifa = 0;
+        for(Persona persona : listaPersonas) {
+            if (persona.getCedula().equals(cedula)) {
+                for (Instalaciones instalaciones : listaInstalaciones) {
+                    if (instalaciones.getNombre().equals(tipoInstalacion)) {
+                        tarifa = instalaciones.getCosto();
+                        double baseCost = 0;
+                        switch (instalaciones.getNombre()) {
+                            case "Pista de Atletismo", "Piscina", "Gimnasio", "Cancha de Fútbol, Cancha de Balocesto, Aulas de estudio grupal, Salas de estudio individual":
+                                if (instalaciones.getNombre().equals(tipoInstalacion)) {
+                                    baseCost = instalaciones.getCosto();
+                                }
+                                break;
+                            default:
+                                baseCost = 10.000;
+                        }
+                        switch (persona.getTipoPersona().name()) {
+                            case "ESTUDIANTE":
+                                tarifa = baseCost * 1;
+                                break;
+                            case "PROFESOR":
+                                tarifa = baseCost * 0.5;
+                                break;
+                            case "VISITANTE":
+                                tarifa = baseCost;
+                                break;
+                            default:
+                                tarifa = baseCost * 1.1;
+                        }
+
+                    }
+                }
+            }
+        }
+        return tarifa;
+    }*/
+
+    private boolean isAvailable(String idInstalacion, LocalDate diaReserva, String horaReserva) {
+        for (Reserva reserva : listaReservas) {
+            if (reserva.getIdInstalacion().equals(idInstalacion) &&
+                    reserva.getDiaReserva().equals(diaReserva) &&
+                    reserva.getHoraReserva().equals(horaReserva)) {
+                return false; // Time slot already booked
+            }
+        }
+        return true; // Time slot available
+    }
+
+    @Override
+    public void crearInstalacion(String id, String nombre, int aforo, float costo, LocalDateTime horaInicio, LocalDateTime horaFin) {
+        String validationMessage = "";
+        if (nombre == null || nombre.isEmpty()) validationMessage += "El nombre de la instalación no puede ser nulo o vacío\n";
+        if (aforo <= 0) validationMessage += "El aforo de la instalación no puede ser menor o igual a 0\n";
+        if (costo < 0) validationMessage += "El costo de la instalación no puede ser menor o igual a 0\n";
+        if (horaInicio == null) validationMessage += "La hora de inicio no puede ser nula\n";
+        if (horaFin == null) validationMessage += "La hora de fin no puede ser nula\n";
+
+        if (!validationMessage.isEmpty()) throw new IllegalArgumentException(validationMessage);
+
+        listaInstalaciones.add(new Instalaciones(id, nombre, aforo, costo, horaInicio, horaFin));
+    }
+
+    @Override
+    public Optional<Persona> obtenerPersona(String cedula) {
+        return listaPersonas.stream()
+                .filter(persona -> persona.getCedula().equals(cedula))
+                .findFirst();
+    }
+
+    @Override
+    public List<Reserva> listarTodasReservas() {
+        return new ArrayList<>(listaReservas); // Return a copy to avoid external modification
+    }
+
+    @Override
+    public List<Reserva> listarReservasPorPersona() {
+        return List.of();
+    }
+
+    @Override
+    public List<Reserva> listarReservasPorPersona(String cedulaPersona) {
+        return List.of();
+    }
+}
+
 //    @Override
 //    public Reserva crearReserva(String idInstalacion, String cedula, String tipoInstalacion, LocalDate diaReserva, String horaReserva) throws Exception {
 //        StringBuilder validationMessage = new StringBuilder();
@@ -123,68 +450,9 @@ public class ReservasUQ implements ServiciosReservasUQ {
 //        return null;
 //    }
 
-    @Override
-    public Reserva crearReserva(String tipoInstalacion, String idInstalacion, String cedula, LocalDate diaReserva, String horaReserva) throws Exception {
-        // Validación de parámetros
-        if (idInstalacion == null || idInstalacion.isEmpty() ||
-                cedula == null || cedula.isEmpty() ||
-                diaReserva == null ||
-                horaReserva == null || horaReserva.isEmpty()) {
-            throw new Exception("Todos los campos son obligatorios.");
-        }
-
-        LocalDateTime fechaReserva = LocalDateTime.of(diaReserva, LocalTime.parse(horaReserva));
-
-
-        Instalaciones instalacion = listaInstalaciones.stream()
-                .filter(i -> i.getId().equals(idInstalacion))
-                .findFirst()
-                .orElseThrow(() -> new Exception("No hay ninguna instalación asociada al ID ingresado."));
-
-        if (!fechaReserva.isBefore(instalacion.getHoraInicio()) || !fechaReserva.isAfter(instalacion.getHoraFin())) {
-            throw new Exception("La reserva debe estar dentro del horario de la instalación.");
-        }
-
-        if (!isAvailable(idInstalacion, diaReserva, horaReserva)) {
-            throw new Exception("El horario solicitado ya está reservado.");
-        }
-        Reserva reserva = Reserva.builder()
-                .idInstalacion(idInstalacion)
-                .cedulaReservante(cedula)
-                .diaReserva(diaReserva)
-                .horaReserva(horaReserva)
-                .build();
-
-        listaReservas.add(reserva);
-        return reserva;
-    }
-
-
-    private boolean isAvailable(String idInstalacion, LocalDate diaReserva, String horaReserva) {
-        for (Reserva reserva : listaReservas) {
-            if (reserva.getIdInstalacion().equals(idInstalacion) &&
-                    reserva.getDiaReserva().equals(diaReserva) &&
-                    reserva.getHoraReserva().equals(horaReserva)) {
-                return false; // Time slot already booked
-            }
-        }
-        return true; // Time slot available
-    }
-
-    @Override
-    public void crearInstalacion(String id, String nombre, int aforo, float costo, LocalDateTime horaInicio, LocalDateTime horaFin) {
-        String validationMessage = "";
-        if (nombre == null || nombre.isEmpty()) validationMessage += "El nombre de la instalación no puede ser nulo o vacío\n";
-        if (aforo <= 0) validationMessage += "El aforo de la instalación no puede ser menor o igual a 0\n";
-        if (costo < 0) validationMessage += "El costo de la instalación no puede ser menor o igual a 0\n";
-        if (horaInicio == null) validationMessage += "La hora de inicio no puede ser nula\n";
-        if (horaFin == null) validationMessage += "La hora de fin no puede ser nula\n";
-
-        if (!validationMessage.isEmpty()) throw new IllegalArgumentException(validationMessage);
-
-        listaInstalaciones.add(new Instalaciones(id, nombre, aforo, costo, horaInicio, horaFin));
-    }
-
+//        if (!fechaReserva.isBefore(instalacion.getHoraInicio()) || !fechaReserva.isAfter(instalacion.getHoraFin())) {
+//            throw new Exception("La reserva debe estar dentro del horario de la instalación.");
+//        }
 
     /*@Override
     public void crearInstalacion(String id, String nombre, int aforo, float costo, LocalDateTime horaInicio, LocalDateTime horaFin) {
@@ -210,29 +478,3 @@ public class ReservasUQ implements ServiciosReservasUQ {
         else {Instalaciones instalacion = new Instalaciones(id, nombre, aforo, costo, horaInicio, horaFin);
         listaInstalaciones.add(instalacion);}
     }*/
-
-    @Override
-    public Optional<Persona> obtenerPersona(String cedula) {
-        return listaPersonas.stream()
-                .filter(persona -> persona.getCedula().equals(cedula))
-                .findFirst();
-    }
-
-    @Override
-    public List<Reserva> listarTodasReservas() {
-        return new ArrayList<>(listaReservas); // Return a copy to avoid external modification
-    }
-
-    @Override
-    public List<Reserva> listarReservasPorPersona() {
-        return List.of();
-    }
-
-    @Override
-    public List<Reserva> listarReservasPorPersona(String cedulaPersona) {
-        return List.of();
-    }
-
-
-}
-

@@ -19,6 +19,7 @@ public class Reserva {
     private LocalDate diaReserva;
     private String horaReserva;
     private String cedula;
+    private double costo;
 
     public String getNombreInstalacion(List<Instalaciones> listaInstalaciones) {
         for (Instalaciones instalacion : listaInstalaciones) {

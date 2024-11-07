@@ -43,16 +43,18 @@ public class ReservaApplication extends Application {
             AppReserva.crearInstalacion("07", "Aulas de estudio grupal", 50, 0, LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)));
             AppReserva.crearInstalacion("08", "Salas de estudio individual", 50, 0, LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)));
 
-            Reserva reserva1 = new Reserva("01", "123", LocalDate.now(), "6;00", "123");
-            Reserva reserva5 = new Reserva("01", "123", LocalDate.now(), "6:00", "123");
-            Reserva reserva2 = new Reserva("02", "123", LocalDate.now(), "7:00", "123");
-            Reserva reserva3 = new Reserva("03", "123", LocalDate.now(), "8:00", "123");
-            Reserva reserva4 = new Reserva("05", "123", LocalDate.now(), "8:00", "123");
+            Reserva reserva1 = new Reserva("01", "123", LocalDate.now(), "6;00", "123", CostoInstalaciones.PISTA_ATLETISMO.getCosto());
+            Reserva reserva5 = new Reserva("01", "123", LocalDate.now(), "6:00", "123", CostoInstalaciones.PISTA_ATLETISMO.getCosto());
+            Reserva reserva2 = new Reserva("02", "123", LocalDate.now(), "7:00", "123", CostoInstalaciones.PISCINA.getCosto());
+            Reserva reserva3 = new Reserva("03", "123", LocalDate.now(), "8:00", "123", CostoInstalaciones.GIMNASIO.getCosto());
+            Reserva reserva4 = new Reserva("05", "123", LocalDate.now(), "8:00", "123", CostoInstalaciones.CANCHA_DE_FUTBOL.getCosto());
             AppReserva.getListaReservas().add(reserva1);
             AppReserva.getListaReservas().add(reserva5);
             AppReserva.getListaReservas().add(reserva2);
             AppReserva.getListaReservas().add(reserva3);
             AppReserva.getListaReservas().add(reserva4);
+
+
 
             System.out.println(AppReserva.getListaInstalaciones().size());
             }catch (Exception e) {

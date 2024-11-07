@@ -14,23 +14,25 @@
         </Label>
 
         <GridPane alignment="CENTER" hgap="20.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="473.0" vgap="20.0">
-
+            <!-- First Row -->
             <Label text="Tipo Instalacion:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <ComboBox fx:id="cbTipoInstalaciones" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <!-- First Row -->
+            <!-- Second Row -->
             <Label text="ID Instalacion:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
             <TextField fx:id="txtidInstalacion" minWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <!-- Second Row -->
+            <!-- Third Row -->
             <Label text="Cedula:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <TextField fx:id="txtCedula" minWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <!-- Third Row -->
-
             <!-- Fourth Row -->
             <Label text="Día Reserva:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
             <DatePicker fx:id="dpDiaReserva" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <!-- Fifth Row -->
             <Label text="Hora:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
             <ComboBox fx:id="cbhoraReserva" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <!-- Sixth Row -->
+            <Label text="Tarifa Instalacion:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <TextField fx:id="txtCosto" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
         </GridPane>
 
         <!-- Button at the bottom of the VBox -->
@@ -39,7 +41,7 @@
 
     <VBox alignment="TOP_CENTER" prefWidth="400.0" spacing="20.0">
         <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="10.0">
-            <Label text="Lista de citas">
+            <Label text="Lista de Instalaciones Disponibless">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -61,7 +63,7 @@
 
 
         <VBox alignment="BOTTOM_CENTER" prefWidth="495.0" spacing="10.0">
-        <Label text="Lista de citas">
+        <Label text="Lista de Reservaciones por Usuario">
             <font>
                 <Font size="20.0" />
             </font>
@@ -69,6 +71,7 @@
         <TableView fx:id="tablaReservas" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="colidInstalacion" text="Instalación" />
+                <TableColumn fx:id="colNombreReservaInstalacion" text="Nombre Instalacion" />
                 <TableColumn fx:id="colCedula" text="Cédula" />
                 <TableColumn fx:id="diaReserva" text="Día Reserva" />
                 <TableColumn fx:id="horaReserva" text="Hora Reserva" />
