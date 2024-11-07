@@ -62,7 +62,13 @@ public class PerfilControlador implements Initializable {
     private Label lblName;
         @FXML
         void onCancelarReserva(ActionEvent event) {
-
+            for (Reserva reserva : reservasUQ.getListaReservas()){
+                if (tablaReservas.getSelectionModel().getSelectedItem() == reserva){
+                    reservas.remove(reserva);
+                    tablaReservas.setItems(reservasUsuarioActual);
+                    System.out.println(reservasUsuarioActual.size()+ reservasUQ.getListaReservas().size());
+                }
+            }
         }
 
         @FXML
